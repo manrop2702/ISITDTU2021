@@ -48,17 +48,17 @@ It is encrypted using AES-CBC, signed by HMAC.
 
 ```python
 def encrypt(self, data):
-		iv = self._initialisation_vector()
-		cipher = self._cipher(self.key, iv)
-		pad = self.AES_BLOCK_SIZE - len(data) % self.AES_BLOCK_SIZE
-		data = data + (pad * chr(pad)).encode()
-		data = iv + cipher.encrypt(data)
-		ss = b'name=player101&role=%s'%(hexlify(data))
-		sig = self.sign_new(ss)
-		return data, sig
+	iv = self._initialisation_vector()
+	cipher = self._cipher(self.key, iv)
+	pad = self.AES_BLOCK_SIZE - len(data) % self.AES_BLOCK_SIZE
+	data = data + (pad * chr(pad)).encode()
+	data = iv + cipher.encrypt(data)
+	ss = b'name=player101&role=%s'%(hexlify(data))
+	sig = self.sign_new(ss)
+	return data, sig
 
 def sign_new(self, data):
-		return hmac.new(self.key, data, md5).digest()
+	return hmac.new(self.key, data, md5).digest()
 ```
 
 So what we get is the encryption of `our-role` (enc_role), and a HMAC signature of `name=player101&role=enc_role`.
