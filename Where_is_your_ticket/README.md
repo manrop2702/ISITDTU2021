@@ -9,6 +9,8 @@ This is my first challenge I've ever written. The challenge is for my univeristy
 
 # Challenge `Where is your ticket?`
 
+Category: Crypto
+
 * Source: https://github.com/manrop2702/ISITDTU2021/blob/main/Where_is_your_ticket/challenge/wheres_your_ticket.py
 
 * Description: 
