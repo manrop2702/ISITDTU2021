@@ -35,7 +35,7 @@ Signature: 7d9d7c5a60b221e63b19bc3b0d91c44d
 Your choice:
 ```
 
-Basically, the challenge give us a role as a <span style="color:green">guest</span>. Base on the description or the source code, we should find a way to change our identity to <span style="color:red">royal</span>.
+Basically, the challenge give us a role as a <span style="color:green">guest</span>. Base on the description and the source code, we should find a way to change our identity to <span style="color:red">royal</span>.
 
 Here is the encrypted data of our identity:
 
