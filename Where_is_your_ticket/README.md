@@ -61,7 +61,7 @@ def sign_new(self, data):
 		return hmac.new(self.key, data, md5).digest()
 ```
 
-So what we get is _<span style="color:green">our-role</span>_ - encrypted, and a HMAC signature of `name=player101&role=`_<span style="color:green">our-role</span>_.
+So what we get is the encryption of _<span style="color:green">our-role</span>_ (enc_role), and a HMAC signature of `name=player101&role=`_<span style="color:green">enc_role</span>_.
 
 On the server, we can do 3 things:
 1. Send the encrypted data and its signature to verify and check the identity.
