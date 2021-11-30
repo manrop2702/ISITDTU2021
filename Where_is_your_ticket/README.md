@@ -61,7 +61,7 @@ def sign_new(self, data):
 		return hmac.new(self.key, data, md5).digest()
 ```
 
-So what we get is the encryption of _<span style="color:green">our-role</span>_ (enc_role), and a HMAC signature of `name=player101&role=`_<span style="color:green">enc_role</span>_.
+So what we get is the encryption of `our-role` (enc_role), and a HMAC signature of `name=player101&role=enc_role`.
 
 On the server, we can do 3 things:
 1. Send the encrypted data and its signature to verify and check the identity.
@@ -73,7 +73,7 @@ def sign_old(self, data):
     return md5(self.xor_key(data)).digest()
 ```
 
-If we try to sign `name=player101&role=`<span style="color:red">something</span> with HMAC then we would receive this message:
+If we try to sign `name=player101&role=something` with HMAC then we would receive this message:
 
 ```
 Not that easy!
@@ -82,9 +82,9 @@ Not that easy!
 So no easy way.
 
 The idea is to apply `Hash length extension attack`, which is not doable on HMAC.
-However, the challenge gives us not only the HMAC, but also the old hashing authentication method that is vulnerable to the attack.
+However, the challenge gives us not only the HMAC, but also the old hashing method that is vulnerable to the attack.
 
-Furthermore, if we look at the HMAC source code, it's basically implemented like this:
+If we look at the HMAC source code, it's basically implemented like this:
 
 > `HMAC(data, key) = hash(key ^ (\x5c*blocksize) + hash(key ^ (\x36*blocksize) + data))`
 
@@ -94,25 +94,23 @@ And the old message authentication:
 
 Ok so here we will do some magic tricks:
 
-The hashing this challenge is using is MD5, so block size will be `md5().digest_size = 64`
+The hashing this challenge uses is MD5, so block size will be `md5().digest_size = 64`
 
 First, add `64*(\x36)` to our data "`hello`" to sign the old way, :
 
 > `hash(key ^ "64*(\x64) + hello")`
 
-Save the hash.
-
 Then add `64*(\x5c)` to the hash we just got, sign the old way:
 
 > `hash(key ^ "64*/x5c" + hash(key ^ "64*(\x64) + hello")) = HMAC("hello", key)`
 
-So here we just created the HMAC hash of our own data.
+So here we just created the HMAC of our data.
 
-In order to change our identity, we have to change our encrypted data so that when it get decrypted, it becomes `"royal"`.
+In order to change our identity, we have to change our encrypted data so that when it get decrypted, it'll become `"royal"`.
 
 We don't have the key, so all we can do is rely on what the server gave us.
 
-When nc to the server first thing we got was an encrypted data of `"guest"`.
+When `nc` to the server first thing we got was an encrypted data of `"guest"`.
 Remember it was encrypted with AES-CBC, so bit flip is the way.
 
 After bit-flipping the original data, we have to generate the HMAC of the new data using the above method.
